@@ -12,12 +12,23 @@ enum class AccountingMethod {
     LIFO
 };
 
+template<AccountingMethod Method>
 class PnlCalculator {
+    static_assert(Method == AccountingMethod::FIFO || Method == AccountingMethod::LIFO,
+                "PnlCalculator must be instantiated with either FIFO or LIFO");
 public:
-    explicit PnlCalculator(AccountingMethod method = AccountingMethod::FIFO);
+    PnlCalculator() = default;
+    
+    static constexpr AccountingMethod getMethod() { return Method; }
+    
+    static constexpr const char* getMethodString() {
+        if constexpr (Method == AccountingMethod::FIFO)
+            return "FIFO";
+        else
+            return "LIFO";
+    }
     
 private:
-    AccountingMethod method_;
     std::deque<Trade> trades_;
 };
 
