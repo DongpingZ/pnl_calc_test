@@ -64,7 +64,9 @@ std::optional<float> PnlCalculator::addTrade(const Trade& trade) {
 
         if (new_pos > 0) {
             assert(trades_.empty());
-            trades_.push_back(trade);
+            Trade new_trade = trade;
+            new_trade.setQty(new_pos);
+            trades_.push_back(new_trade);
         }
         return cur_pnl;
     }

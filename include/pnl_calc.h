@@ -37,7 +37,6 @@ public:
 private:
     AccountingMethod method_;
     std::deque<Trade> trades_;
-    int net_position_ = 0;
 };
 
 #endif // PNL_CALC_H
