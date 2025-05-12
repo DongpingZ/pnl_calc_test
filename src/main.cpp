@@ -37,7 +37,9 @@ int main(int argc, char* argv[]) {
 
     // Read and print each line
     while (std::getline(file, line)) {
-        std::cout << line << std::endl;  // For now, just print each line
+        std::cout << line << std::endl;
+        Trade trade(line);
+        trade.print();
     }
 
     file.close();

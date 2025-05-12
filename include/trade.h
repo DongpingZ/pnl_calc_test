@@ -11,8 +11,9 @@ enum class TradeSide {
 
 class Trade {
 public:
-    Trade() = default;
+    Trade() = delete;
     Trade(uint64_t timestamp, std::string symbol, TradeSide side, double price, uint32_t quantity);
+    explicit Trade(const std::string& line);
     
     uint64_t getTimestamp() const;
     std::string getSymbol() const;
@@ -20,7 +21,7 @@ public:
     double getPrice() const;
     uint32_t getQty() const;
     
-    static Trade fromCsvLine(const std::string& line);
+    void print() const;
     
 private:
     uint64_t timestamp_ = 0;
