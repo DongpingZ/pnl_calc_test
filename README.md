@@ -16,7 +16,9 @@ A C++ program for calculating Profit and Loss (PnL) using either FIFO (First-In-
 ./build/pnl_calc <input_file> <method>
 ```
 
-for example: `./build/pnl_calc data/test_input_3.csv lifo`
+for example: `./build/pnl_calc data/test_input_3.csv fifo`
+
+`method` can be either `fifo` or `lifo`
 
 ### Unit test
 
