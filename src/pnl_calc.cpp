@@ -2,7 +2,8 @@
 #include <fstream>
 #include <optional>
 #include <cassert>
-#include <algorithm>  // for std::min
+#include <algorithm>
+#include <iostream>
 
 bool PnlCalculator::new_trade_is_same_side_with_existing_position(const Trade& trade) const {
     if (trades_.empty())
@@ -48,7 +49,7 @@ std::optional<float> PnlCalculator::addTrade(const Trade& trade) {
             int cur_offset_pos = std::min(new_pos, last_trade.getQty());
 
             float cur_price_diff;
-            if (trade.getSide() == TradeSide::BUY)
+            if (trade.getSide() == TradeSide::SELL)
                 cur_price_diff = trade.getPrice() - last_trade.getPrice();
             else
                 cur_price_diff = last_trade.getPrice() - trade.getPrice();
@@ -65,7 +66,16 @@ std::optional<float> PnlCalculator::addTrade(const Trade& trade) {
             assert(trades_.empty());
             trades_.push_back(trade);
         }
+        return cur_pnl;
     }
+}
 
-    return std::nullopt;
+void PnlCalculator::debug_print() const {
+    std::cout << "=============================debug print ==================\n";
+    std::cout << "PnlCalculator: " << getMethodString() << std::endl;
+    for (const auto& trade : trades_) {
+        std::cout << "     ";
+        trade.print();
+    }
+    std::cout << "\n\n";
 }

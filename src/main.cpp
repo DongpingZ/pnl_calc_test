@@ -1,8 +1,10 @@
 #include "pnl_calc.h"
+#include <map>
 #include <optional>
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <iomanip>
 
 int main(int argc, char* argv[]) {
     if (argc != 3){
@@ -23,7 +25,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    PnlCalculator calculator(method);
+    std::map<std::string, PnlCalculator> calculator;
 
     std::ifstream file(inputFile);
     if (!file.is_open()) {
@@ -35,15 +37,24 @@ int main(int argc, char* argv[]) {
 
     // Skip header line
     std::getline(file, line);
+    std::cout << "TIMESTAMP,SYMBOL,PNL" << std::endl;
 
-    // Read and print each line
     while (std::getline(file, line)) {
-        std::cout << line << std::endl;
         Trade trade(line);
-        trade.print();
-        auto pnl = calculator.addTrade(trade);
-        if (pnl)
-            std::cout << "PnL: " << *pnl << std::endl;
+        const std::string& symbol = trade.getSymbol();
+        if (calculator.find(symbol) == calculator.end())
+            calculator.emplace(symbol, PnlCalculator(method));
+
+        PnlCalculator& cur_calculator = calculator.at(symbol);
+
+        // trade.print(); // just for check trade info is correct
+        std::optional<float> pnl = cur_calculator.addTrade(trade);
+        if (pnl.has_value()) {
+            std::cout << trade.getTimestamp() << ',' << trade.getSymbol() << "," << std::fixed << std::setprecision(2) << *pnl << std::endl;
+        }
+
+        // debug print
+        // cur_calculator.debug_print();
     }
 
     file.close();

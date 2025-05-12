@@ -31,6 +31,8 @@ public:
     Trade pop_latest_trade();
     void push_back_latest_trade(const Trade& trade);
     bool new_trade_is_same_side_with_existing_position(const Trade& trade) const;
+
+    void debug_print() const;
     
 private:
     AccountingMethod method_;
