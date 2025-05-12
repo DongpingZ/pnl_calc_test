@@ -6,11 +6,28 @@
 Trade::Trade(uint64_t timestamp, std::string symbol, TradeSide side, double price, uint32_t qty)
     : timestamp_(timestamp), symbol_(symbol), side_(side), price_(price), qty_(qty) {}
 
+Trade::Trade(const Trade& other)
+    : timestamp_(other.timestamp_), symbol_(other.symbol_), side_(other.side_), price_(other.price_), qty_(other.qty_) {}
+
+Trade& Trade::operator=(const Trade& other) {
+    if (this != &other) {
+        timestamp_ = other.timestamp_;
+        symbol_ = other.symbol_;
+        side_ = other.side_;
+        price_ = other.price_;
+        qty_ = other.qty_;
+    }
+    return *this;
+}
+
+Trade::~Trade() {}
+
 uint64_t Trade::getTimestamp() const { return timestamp_; }
 std::string Trade::getSymbol() const { return symbol_; }
 TradeSide Trade::getSide() const { return side_; }
 double Trade::getPrice() const { return price_; }
 uint32_t Trade::getQty() const { return qty_; }
+void Trade::setQty(uint32_t qty) { qty_ = qty; }
 
 void Trade::print() const {
     std::cout << "Trade: " << timestamp_ << ", " << symbol_ << ", ";

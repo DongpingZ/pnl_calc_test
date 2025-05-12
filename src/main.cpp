@@ -1,4 +1,5 @@
 #include "pnl_calc.h"
+#include <optional>
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -22,7 +23,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // std::map<std::string, PnlCalculator<method>> calculator;
+    PnlCalculator calculator(method);
 
     std::ifstream file(inputFile);
     if (!file.is_open()) {
@@ -40,6 +41,9 @@ int main(int argc, char* argv[]) {
         std::cout << line << std::endl;
         Trade trade(line);
         trade.print();
+        auto pnl = calculator.addTrade(trade);
+        if (pnl)
+            std::cout << "PnL: " << *pnl << std::endl;
     }
 
     file.close();

@@ -14,13 +14,16 @@ public:
     Trade() = delete;
     Trade(uint64_t timestamp, std::string symbol, TradeSide side, double price, uint32_t quantity);
     explicit Trade(const std::string& line);
-    
+    Trade(const Trade& other);
+    Trade& operator=(const Trade& other);
+    ~Trade();
+
     uint64_t getTimestamp() const;
     std::string getSymbol() const;
     TradeSide getSide() const;
     double getPrice() const;
     uint32_t getQty() const;
-    
+    void setQty(uint32_t qty);
     void print() const;
     
 private:
